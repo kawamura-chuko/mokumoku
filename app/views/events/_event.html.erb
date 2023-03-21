@@ -7,6 +7,7 @@
       <h4 class="card-title fw-bold">
         <%= link_to event.title, event_path(event)  %>
       </h4>
+      <%= render 'events/only_woman', event: event %>
       <p class="card-text"><%= event.content %></p>
       <hr />
       <div class="d-flex justify-content-between">
