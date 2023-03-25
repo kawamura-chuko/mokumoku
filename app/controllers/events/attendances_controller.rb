@@ -4,8 +4,8 @@ class Events::AttendancesController < ApplicationController
   before_action :set_event, only: %i[create destroy]
 
   def create
-    if @event.available?(current_user)
-      event_attendance = current_user.attend(@event)
+    event_attendance = current_user.attend(@event)
+    if event_attendance.id
       (@event.attendees - [current_user] + [@event.user]).uniq.each do |user|
         NotificationFacade.attended_to_event(event_attendance, user)
       end
