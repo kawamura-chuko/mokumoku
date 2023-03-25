@@ -6,11 +6,11 @@ class EventAttendance < ApplicationRecord
   belongs_to :event
 
   validates :user_id, uniqueness: { scope: :event_id }
-  validate :validate_only_woman
+  validate :validate_can_attend
 
   private
 
-  def validate_only_woman
-    errors.add('女性限定イベントに申し込みできません') unless event.available?(user)
+  def validate_can_attend
+    errors.add('イベントに申し込みできません') unless user.can_attend?(event)
   end
 end

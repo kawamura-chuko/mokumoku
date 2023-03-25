@@ -27,12 +27,4 @@ class Event < ApplicationRecord
   def future?
     !past?
   end
-
-  def available?(user)
-    # 女性限定イベントでなければ誰でも参加できる
-    return true unless only_woman
-
-    # 女性限定イベントには女性のみが参加できる
-    user.woman?
-  end
 end
