@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :notification_timings, through: :user_notification_timings
   has_one_attached :avatar
 
+  enum gender: { other: 0, man: 1, woman: 2 }
+
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
@@ -75,5 +77,11 @@ class User < ApplicationRecord
 
   def allow_liked_event_notification?
     notification_timings.liked_event.present?
+  end
+
+  def can_attend?(event)
+    return false if owner?(event)
+
+    !event.only_woman? || woman?
   end
 end

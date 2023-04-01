@@ -27,4 +27,10 @@ class Event < ApplicationRecord
   def future?
     !past?
   end
+
+  def notify_attendees(event_attendance, myself)
+    (attendees - [myself] + [user]).uniq.each do |user|
+      NotificationFacade.attended_to_event(event_attendance, user)
+    end
+  end
 end

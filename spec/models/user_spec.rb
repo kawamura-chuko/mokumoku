@@ -84,5 +84,36 @@ RSpec.describe User, type: :model do
         end.to change { EventAttendance.count }.by(-1)
       end
     end
+
+    describe 'can_attend?' do
+      let(:other) { create :user }
+      let(:woman) { create :user, :woman_user }
+      let(:event) { create :event }
+      let(:woman_only_event) { create :event, :woman_only_event }
+
+      describe '女性限定event' do
+        it '女性以外の場合falseが返ること' do
+          expect(other.can_attend?(woman_only_event)).to be false
+        end
+        it '女性の場合trueが返ること' do
+          expect(woman.can_attend?(woman_only_event)).to be true
+        end
+      end
+      describe '女性限定ではないevent' do
+        it '女性以外の場合trueが返ること' do
+          expect(other.can_attend?(event)).to be true
+        end
+        it '女性の場合trueが返ること' do
+          expect(woman.can_attend?(event)).to be true
+        end
+      end
+      describe 'オーナーが作成したevent' do
+        let(:owner) { create :user, :woman_user }
+        let(:owner_event) { create :event, user: owner }
+        it 'オーナーの場合falseが返ること' do
+          expect(owner.can_attend?(owner_event)).to be false
+        end
+      end
+    end
   end
 end

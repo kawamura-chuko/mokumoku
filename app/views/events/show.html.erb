@@ -14,6 +14,7 @@
             <h1>
               <%= @event.title %>
             </h1>
+            <%= render 'events/only_woman', event: @event %>
             <% if logged_in? %>
               <div class="ms-auto">
                 <% if current_user.own?(@event) %>
@@ -84,7 +85,7 @@
           <hr />
           <div class="text-center">
             <% if logged_in? %>
-              <% if !current_user.owner?(@event) %>
+              <% if current_user.can_attend?(@event) %>
                 <% if current_user.attend?(@event) %>
                   <%= link_to 'キャンセルする',
                               event_attendance_url(@event),

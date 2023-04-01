@@ -24,6 +24,10 @@
               <%= f.email_field :email, class: 'form-control' %>
             </div>
             <div class="mb-3">
+              <%= f.label :gender %>
+              <%= f.select :gender, [["その他", "other"], ["男性", "man"], ["女性", "woman"]], { selected: "other" } %>
+            </div>
+            <div class="mb-3">
               <%= f.label :password %>
               <%= f.password_field :password, class: 'form-control' %>
             </div>
