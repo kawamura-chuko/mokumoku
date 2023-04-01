@@ -5,10 +5,8 @@ class Events::AttendancesController < ApplicationController
 
   def create
     event_attendance = current_user.attend(@event)
-    if event_attendance.id
-      (@event.attendees - [current_user] + [@event.user]).uniq.each do |user|
-        NotificationFacade.attended_to_event(event_attendance, user)
-      end
+    if event_attendance.present? && event_attendance.id
+      @event.notify_attendees(event_attendance, current_user)
       redirect_back(fallback_location: root_path, success: '参加の申込をしました')
     else
       render 'events/show'
